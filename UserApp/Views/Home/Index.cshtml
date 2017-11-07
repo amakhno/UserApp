@@ -7,21 +7,22 @@
 <div class="form-horizontal login-form">
     <h3>Вход</h3>
     <hr />
+    <form>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Почта</label>
+            <div class="col-md-10">
+                <input class="form-control" type="email" id="email" /> <br /><br />
+            </div>
+            <label class="col-md-2 control-label">Пароль</label>
+            <div class="col-md-10">
+                <input class="form-control" type="password" id="password" /> <br /><br />
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Почта</label>
-        <div class="col-md-10">
-            <input class="form-control" type="email" id="email" /> <br /><br />
+            <div class="col-md-offset-2 col-md-10">
+                <input class="btn btn-primary" type="submit" id="submit" value="Войти" />
+            </div>
         </div>
-        <label class="col-md-2 control-label">Пароль</label>
-        <div class="col-md-10">
-            <input class="form-control" type="password" id="password" /> <br /><br />
-        </div>
-
-        <div class="col-md-offset-2 col-md-10">
-            <input class="btn btn-primary" type="submit" id="submit" value="Войти" />
-        </div>
-    </div>
+    </form>
 </div>
 
 <div id="waiting-table">
@@ -31,6 +32,9 @@
             <tr id="head">
                 <th>
                     Название встречи
+                </th>
+                <th>
+                    Комната
                 </th>
                 <th>
                     Начало
@@ -71,285 +75,309 @@
     </table>
 </div>
 
-<div id="myModalBox" class="modal">
+<div id="myModalBox" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Заголовок модального окна -->
+
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Бронировать</h4>
             </div>
-            <!-- Основное содержимое модального окна -->
             <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label for="NameOfMeeting" class="col-sm-2 control-label">Название встречи</label>
-                        <input class="form-control" data-val="true" data-val-maxlength="Длинна строки должна быть не более 50" data-val-maxlength-max="50" data-val-minlength="Поле Название встречи должно иметь тип строки или массива с минимальной длиной &quot;3&quot;." data-val-minlength-min="3" data-val-required="Требуется название встречи" id="NameOfMeeting" name="NameOfMeeting" type="text" value="">
-                        <span class="field-validation-valid text-danger" data-valmsg-for="NameOfMeeting" data-valmsg-replace="true"></span>
+                <!-- Form itself -->
+                <form name="sentMessage" class="form form-register1" id="contactForm" novalidate>
 
-                        <label class="col-sm-2 control-label" for="BeginTime">Начало</label>
-                        <input class="form-control datetimepicker1" data-val="true" data-val-date="Поле Начало должно содержать дату." data-val-required="Требуется указать качало встречи" id="BeginTime" name="BeginTime" type="datetime" value="">
-                        <span class="field-validation-valid text-danger" data-valmsg-for="BeginTime" data-valmsg-replace="true"></span>
-
-                        <label class="col-sm-2 control-label" for="EndTime">Конец</label>
-                        <input class="form-control datetimepicker2" data-val="true" data-val-date="Поле Конец должно содержать дату." data-val-required="Требуется поле Конец." id="EndTime" name="EndTime" type="datetime" value="">
-                        <span class="field-validation-valid text-danger" data-valmsg-for="EndTime" data-valmsg-replace="true"></span>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="NameOfMeeting">Название встречи</label>
+                            <input class="form-control" data-val="true" data-val-maxlength="Длинна строки должна быть не более 50" data-val-maxlength-max="50" data-val-minlength="Поле Название встречи должно иметь тип строки или массива с минимальной длиной &quot;3&quot;." data-val-minlength-min="3" data-val-required="Требуется название встречи" id="NameOfMeeting" name="NameOfMeeting" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="NameOfMeeting" data-valmsg-replace="true"></span>
+                        </div>
                     </div>
-
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="BeginTime">Начало</label>
+                            <input class="form-control datetimepicker1" data-val="true" data-val-date="Поле Начало должно содержать дату." data-val-required="Требуется указать качало встречи" id="BeginTime" name="BeginTime" type="datetime" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="BeginTime" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <label for="EndTime">Конец</label>
+                            <input class="form-control datetimepicker2" data-val="true" data-val-date="Поле Конец должно содержать дату." data-val-required="Требуется поле Конец." id="EndTime" name="EndTime" type="datetime" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="EndTime" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
                     <input class="form-control" type="text" id="MeetingRoomId" style="display:none" value="" />
+
                 </form>
                 <div id="timeInfo"></div>
 
-            </div>
-            <!-- Футер модального окна -->
+            </div><!-- End of Modal body -->
             <div class="modal-footer">
                 <input type="submit" id="form-submit" value="Сохранить изменения" class="btn btn-primary" />
             </div>
-        </div>
-    </div>
+        </div><!-- End of Modal content -->
+    </div><!-- End of Modal dialog -->
 </div>
-    <script type="text/javascript">
-        function buildData(data) {
-            if (data == "free") {
-                return "Свободна";
+
+<script type="text/javascript">
+
+    var adress = "http://localhost:50087/";
+
+    function buildData(data) {
+        if (data == "free") {
+            return "Свободна";
+        }
+        else {
+            var date = new Date(data);
+            return date.toLocaleString("RU-ru");
+        }
+    }
+
+    function buildBool(data) {
+        if (data == "true") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function getList(username, password) {
+        var loginData = {
+            username: username,
+            password: password
+        };
+        $.ajax({
+            type: 'GET',
+            url: adress + 'api/MeetingsGeneralApi',
+            data: loginData
+        }).success(function (data) {
+            var arr = data.split('|');
+            $("#meeting-table #head").nextAll().html('');
+            for (var i = 0; i < (arr.length / 6); i++) {
+                var result = "";
+                var projector;
+                if (buildBool(arr[6 * i + 3])) {
+                    projector = "<span class=\"glyphicon glyphicon-check\"></span>"
+                }
+                else {
+
+                    projector = "<span class=\"glyphicon glyphicon-unchecked\"></span>"
+                }
+                var board;
+                if (buildBool(arr[6 * i + 4])) {
+                    board = "<span class=\"glyphicon glyphicon-check\"></span>"
+                }
+                else {
+
+                    board = "<span class=\"glyphicon glyphicon-unchecked\"></span>"
+                }
+                result += "<tr class = \"success\"><td>" + arr[6 * i + 1];
+                result += "</td><td>" + arr[6 * i + 2];
+                result += "</td><td>" + projector;
+                result += "</td><td>" + board + "</td><td>" + buildData(arr[6 * i + 5]) + "</td><td>" + "<a class = \"booking\" href=\""
+                    + arr[6 * i] + "\">Забронировать</a>" + "</th></tr>";
+                $("#meeting-table tbody").append(result);
             }
-            else {
-                var date = new Date(data);
-                return date.toLocaleString("RU-ru");
+        }).fail(function (data) {
+            alert('При загрузке возникла ошибка');
+        });
+    }
+
+    function getActualList(username, password) {
+        var loginData = {
+            username: username,
+            password: password
+        };
+        $.ajax({
+            type: 'GET',
+            url: adress + 'api/GetUserMeetingsApi',
+            data: loginData
+        }).success(function (data) {
+            if (data == "") {
+                return;
             }
+            var arr = data.split('|');
+            $("#waiting-table #head").nextAll().html('');
+            for (var i = 0; i < (arr.length / 5); i++) {
+                var result = "";
+                var date1 = buildData(arr[5 * i + 2]);
+                var date2 = buildData(arr[5 * i + 3]);
+                if (arr[5 * i + 4] == "Waiting") {
+                    result += "<tr class = \"waiting\"><td>" + arr[5 * i];
+                    result += "</td><td>" + arr[5 * i + 1];
+                    result += "</td><td>" + date1;
+                    result += "</td><td>" + date2;
+                    result += "</td></tr>";
+                }
+                else {
+                    result += "<tr class = \"success\"><td>" + arr[5 * i];
+                    result += "</td><td>" + arr[5 * i + 1];
+                    result += "</td><td>" + date1;
+                    result += "</td><td>" + date2;
+                    result += "</td></tr>";
+                }
+
+                $("#waiting-table tbody").append(result);
+            }
+        }).fail(function (data) {
+            alert('При загрузке возникла ошибка');
+        });
+    }
+
+    $(function () {
+        if ((localStorage["username"] != null) && (localStorage["password"] != null)) {
+            $(".login-form").hide();
+            $("#login-out a").text("Здравствуйте, " + localStorage["username"] + "! Выйти?");
+            getList(localStorage["username"], localStorage["password"]);
+            getActualList(localStorage["username"], localStorage["password"]);
+        }
+        else {
+            $("#login-out").hide();
+            $("#meeting-table").hide();
+            $("#waiting-table").hide();
         }
 
-        function buildBool(data) {
-            if (data == "true") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-        function getList(username, password) {
+        $('#submit').click(function (e) {
+            e.preventDefault();
             var loginData = {
-                username: username,
-                password: password
+                username: $('#email').val(),
+                password: $('#password').val()
             };
+
             $.ajax({
                 type: 'GET',
-                url: 'http://localhost:50087/api/MeetingRoomApi',
+                url: adress + 'api/LoginApi',
                 data: loginData
             }).success(function (data) {
-                var arr = data.split('|');
-                for (var i = 0; i < (arr.length / 6); i++) {
-                    var result = "";
-                    var projector;
-                    if (buildBool(arr[6 * i + 3])) {
-                        projector = "Есть";
-                    }
-                    else {
-                        projector = "Нет"
-                    }
-                    var board;
-                    if (buildBool(arr[6 * i + 4])) {
-                        board = "Есть";
-                    }
-                    else {
-                        board = "Нет"
-                    }
-                    result += "<tr class = \"success\"><th>" + arr[6 * i + 1];
-                    result += "</th><th>" + arr[6 * i + 2];
-                    result += "</th><th>" + projector;
-                    result += "</th><th>" + board + "</th><th>" + buildData(arr[6 * i + 5]) + "</th><th>" + "<a class = \"booking\" href=\""
-                        + arr[6 * i] + "\">Забронировать</a>" + "</th></tr>";
-                    $("#meeting-table tbody").append(result);
+                if (data == false) {
+                    alert("Error!");
+                    return;
+                }
+                else {
+                    localStorage.setItem("username", loginData["username"]);
+                    localStorage.setItem("password", loginData["password"]);
+                    $(".login-form").hide();
+                    $("#login-out").show();
+                    $("#login-out a").text("Здравствуйте, " + localStorage["username"]);
+                    getList(loginData["username"], loginData["password"]);
+                    getActualList(loginData["username"], loginData["password"]);
+                    $("#meeting-table").show();
+                    $("#waiting-table").show();
                 }
             }).fail(function (data) {
-                alert('При загрузке возникла ошибка');
-            });
-        }
-
-        function getActualList(username, password) {
-            var loginData = {
-                username: username,
-                password: password
-            };
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:50087/api/MyMeetingsApi',
-                data: loginData
-            }).success(function (data) {
-                if (data == "") {
-                    return;
-                }
-                var arr = data.split('|');
-                for (var i = 0; i < (arr.length / 4); i++) {
-                    var result = "";
-                    var date1 = buildData(arr[4 * i + 1]);
-                    var date2 = buildData(arr[4 * i + 2]);
-                    if (arr[4 * i + 3] == "Waiting") {
-                        result += "<tr class = \"waiting\"><th>" + arr[4 * i];
-                        result += "</th><th>" + date1;
-                        result += "</th><th>" + date2;
-                        result += "</th></tr>";
-                    }
-                    else {
-                        result += "<tr class = \"success\"><th>" + arr[4 * i];
-                        result += "</th><th>" + date1;
-                        result += "</th><th>" + date2;
-                        result += "</th></tr>";
-                    }
-
-                    $("#waiting-table tbody").append(result);
-                }
-            }).fail(function (data) {
-                alert('При загрузке возникла ошибка');
-            });
-        }
-
-        $(function () {
-            if ((localStorage["username"] != null) && (localStorage["password"] != null)) {
-                $(".login-form").hide();
-                $("#login-out a").text("Здравствуйте, " + localStorage["username"] + "! Выйти?");
-                getList(localStorage["username"], localStorage["password"]);
-                getActualList(localStorage["username"], localStorage["password"]);
-            }
-            else {
-                $("#login-out").hide();
-                $("#meeting-table").hide();
-                $("#waiting-table").hide();
-            }
-
-            $('#submit').click(function (e) {
-                e.preventDefault();
-                var loginData = {
-                    username: $('#email').val(),
-                    password: $('#password').val()
-                };
-
-                $.ajax({
-                    type: 'GET',
-                    url: 'http://localhost:50087/api/LoginApi',
-                    data: loginData
-                }).success(function (data) {
-                    if (data == false) {
-                        alert("Error!");
-                        return;
-                    }
-                    else {
-                        localStorage.setItem("username", loginData["username"]);
-                        localStorage.setItem("password", loginData["password"]);
-                        $(".login-form").hide();
-                        $("#login-out").show();
-                        $("#login-out a").text("Здравствуйте, " + localStorage["username"]);
-                        getList(loginData["username"], loginData["password"]);
-                        $("#meeting-table").show();
-                        $("#waiting-table").show();
-                    }
-                }).fail(function (data) {
-                    alert('При логине возникла ошибка');
-                });
-            });
-
-            $('#login-out').click(function (e) {
-                e.preventDefault();
-                localStorage.clear();
-                $(".login-form").show();
-                $("#login-out").hide();
-                $("#meeting-table").hide();
-                $("#waiting-table").hide();
-            });
-
-            $('.datetimepicker1').datetimepicker({
-                //language:  'ru',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startDate: "2013-02-14 10:00",
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1
-            });
-
-            $('.datetimepicker2').datetimepicker({
-                //language:  'ru',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1
-            });
-
-            $("#form-submit").click(function (e) {          //Отправить встречу
-                e.preventDefault();
-                if (!$('#NameOfMeeting').valid()) {
-                    return;
-                }
-                if (!$('#BeginTime').valid()) {
-                    return;
-                }
-                if (!$('#EndTime').valid()) {
-                    return;
-                }
-                var meetingData = {
-                    username: localStorage["username"],
-                    password: localStorage["password"],
-                    NameOfMeeting: $("#NameOfMeeting").val(),
-                    BeginTime: $("#BeginTime").val(),
-                    EndTime: $("#EndTime").val(),
-                    MeetingRoomId: $("#MeetingRoomId").val()
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'http://localhost:50087/api/MeetingRoomApi/',
-                    data: meetingData
-                }).success(function (data) {
-                    if (data == "ok") {
-                        $("#myModalBox").hide();
-                        alert("Отправлено модератору");
-                    }
-                    else {
-                        alert(data);
-                    }
-                }).fail(function (data) {
-                    alert("Error");
-                });
-            });
-
-            $("#meeting-table").on("click", ".booking", function (e) {          //открыть модальное окно
-                e.preventDefault();
-                $("#MeetingRoomId").val($(this).attr("href"));
-                $.ajax({
-                    type: 'GET',
-                    url: 'http://localhost:50087/api/TimeApi',
-                    data: {
-                        id: $("#MeetingRoomId").val(),
-                        username: localStorage["username"],
-                        password: localStorage["password"]
-                    }
-                }).success(function (data) {
-                    var arr = data.split('|');
-                    var result = "<p>Забронировано</p>";
-                    for (var i = 0; i < Math.floor(arr.length / 3); i++) {
-                        result += "<p>Встреча: " + arr[3 * i] + "</p>";
-                        result += "<p>Начало: " + buildData(arr[3 * i + 1]) + "</p>";
-                        result += "<p>Окночание: " + buildData(arr[3 * i + 2]) + "</p>";
-                    }
-                    $("#timeInfo").html(result);
-                }).fail(function (data) {
-                    alert('При загрузке времен возникла ошибка');
-                    });
-                $("#myModalBox").fadeIn();
-            });
-
-            $(".close").click(function () {
-                $("#myModalBox").fadeOut();
+                alert('При логине возникла ошибка');
             });
         });
-    </script>
 
+        $('#login-out').click(function (e) {
+            e.preventDefault();
+            localStorage.clear();
+            $(".login-form").show();
+            $("#login-out").hide();
+            $("#meeting-table").hide();
+            $("#waiting-table").hide();
+        });
 
-    <script src="~/Scripts/jquery.session.js"></script>
-    @Scripts.Render("~/bundles/jqueryval")
+        $('.datetimepicker1').datetimepicker({
+            //language:  'ru',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startDate: "2013-02-14 10:00",
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
+
+        $('.datetimepicker2').datetimepicker({
+            //language:  'ru',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1
+        });
+
+        $("#form-submit").click(function (e) {          //Отправить встречу
+            e.preventDefault();
+            if (!$('#NameOfMeeting').valid()) {
+                return;
+            }
+            if (!$('#BeginTime').valid()) {
+                return;
+            }
+            if (!$('#EndTime').valid()) {
+                return;
+            }
+            var meetingData = {
+                username: localStorage["username"],
+                password: localStorage["password"],
+                NameOfMeeting: $("#NameOfMeeting").val(),
+                BeginTime: $("#BeginTime").val(),
+                EndTime: $("#EndTime").val(),
+                MeetingRoomId: $("#MeetingRoomId").val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: adress + 'api/MeetingsGeneralApi',
+                data: meetingData
+            }).success(function (data) {
+                if (data == "ok") {
+                    $("#myModalBox").hide();
+                    getActualList(localStorage["username"], localStorage["password"]);
+                    alert("Отправлено модератору");
+                }
+                else {
+                    alert(data);
+                }
+            }).fail(function (data) {
+                alert("Error");
+            });
+        });
+
+        $("#meeting-table").on("click", ".booking", function (e) {          //открыть модальное окно
+            e.preventDefault();
+            $("#MeetingRoomId").val($(this).attr("href"));
+            $.ajax({
+                type: 'GET',
+                url: adress + 'api/GetMeetingsTimesApi',
+                data: {
+                    id: $("#MeetingRoomId").val(),  
+                    username: localStorage["username"],
+                    password: localStorage["password"]
+                }
+            }).success(function (data) {
+                var arr = data.split('|');
+                var result = "<p><b>Забронировано</b></p>";
+                for (var i = 0; i < Math.floor(arr.length / 3); i++) {
+                    result += "<p>" + (i + 1) + ". " + "<b>" + arr[3 * i] + "</b>";
+                    result += " " + buildData(arr[3 * i + 1]) + " --> ";
+                    result += buildData(arr[3 * i + 2]) + "</p>";
+                    /*result += "<p>Встреча: " + arr[3 * i] + "</p>";
+                    result += "<p>Начало: " + buildData(arr[3 * i + 1]) + "</p>";
+                    result += "<p>Окночание: " + buildData(arr[3 * i + 2]) + "</p>";*/
+                }
+                if (result == "<p><b>Забронировано</b></p>") {
+                    return;
+                }
+                $("#timeInfo").html(result);
+            }).fail(function (data) {
+                alert('При загрузке времен возникла ошибка');
+            });
+            $("#myModalBox").fadeIn();
+        });
+
+        $(".close").click(function () {
+            $("#myModalBox").fadeOut();
+        });
+    });
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
