@@ -208,7 +208,7 @@
         $(function () {
             if ((localStorage["username"] != null) && (localStorage["password"] != null)) {
                 $(".login-form").hide();
-                $("#login-out a").text("Здравствуйте, " + localStorage["username"]);
+                $("#login-out a").text("Здравствуйте, " + localStorage["username"] + "! Выйти?");
                 getList(localStorage["username"], localStorage["password"]);
                 getActualList(localStorage["username"], localStorage["password"]);
             }
@@ -307,7 +307,7 @@
                     data: meetingData
                 }).success(function (data) {
                     if (data == "ok") {
-                        $(".modal-dialog").hide();
+                        $("#myModalBox").hide();
                         alert("Отправлено модератору");
                     }
                     else {
