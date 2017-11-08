@@ -154,6 +154,10 @@
             url: adress + 'api/MeetingsGeneralApi',
             data: loginData
         }).success(function (data) {
+            if (data == "") {
+                $("#meeting-table #head").nextAll().html('');
+                return;
+            }
             var arr = data;//data.split('|');
             $("#meeting-table #head").nextAll().html('');
             for (var i = 0; i < (arr.length / 6); i++) {
@@ -197,6 +201,7 @@
             data: loginData
         }).success(function (data) {
             if (data == "") {
+                $("#waiting-table #head").nextAll().html('');
                 return;
             }
             var arr = data;//.split('|');
