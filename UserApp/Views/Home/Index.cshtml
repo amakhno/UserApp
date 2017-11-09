@@ -158,7 +158,7 @@
                 $("#meeting-table #head").nextAll().html('');
                 return;
             }
-            var arr = data;//data.split('|');
+            var arr = data;
             $("#meeting-table #head").nextAll().html('');
             for (var i = 0; i < (arr.length / 6); i++) {
                 var result = "";
@@ -370,6 +370,7 @@
                     result += "<p>Окночание: " + buildData(arr[3 * i + 2]) + "</p>";*/
                 }
                 if (result == "<p><b>Забронировано</b></p>") {
+                    $("#timeInfo").html(" ");
                     return;
                 }
                 $("#timeInfo").html(result);
