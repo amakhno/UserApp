@@ -123,10 +123,21 @@
         </div><!-- End of Modal content -->
     </div><!-- End of Modal dialog -->
 </div>
+<div style="padding:20px" class="MoneyContainer">
+    <div class="MoneyInfo"></div>
+    <button class="btn btn-primary" id="getMoney">
+        Обновить
+    </button>
+    <button class="btn btn-primary" id="addMoney">
+        Добавить 500
+    </button>
+</div>
 
 <script type="text/javascript">
 
     var adress = "http://localhost:50087/";
+
+    var auth_string = "";
 
     function buildData(data) {
         if (data == "free") {
@@ -185,7 +196,7 @@
                 result += "</td><td>" + arr[6 * i + 2];
                 result += "</td><td>" + projector;
                 result += "</td><td>" + board + "</td><td>" + arr[6 * i + 5] + "</td><td>" + "<a class = \"booking\" href=\""
-                    + arr[6 * i] + "\">Забронировать</a>" + "</th></tr>";
+                    + arr[6 * i] + "\">Забронировать</a>" + "</td></tr>";
                 $("#meeting-table tbody").append(result);
             }
         }).fail(function (data) {
@@ -209,25 +220,34 @@
             }
             var arr = data;//.split('|');
             $("#waiting-table #head").nextAll().html('');
-            for (var i = 0; i < (arr.length / 5); i++) {
+            for (var i = 0; i < (arr.length / 7); i++) {
                 var result = "";
-                var date1 = arr[5 * i + 2];
-                var date2 = arr[5 * i + 3];
-                if (arr[5 * i + 4] == "Waiting") {
-                    result += "<tr class = \"warning\"><td>" + arr[5 * i];
-                    result += "</td><td>" + arr[5 * i + 1];
+                var date1 = arr[7 * i + 3];
+                var date2 = arr[7 * i + 4];
+                if (arr[7 * i + 5] == "Waiting") {
+                    result += "<tr class = \"warning\"><td>" + arr[7 * i + 1];
+                    result += "</td><td>" + arr[7 * i + 2];
                     result += "</td><td>" + date1;
                     result += "</td><td>" + date2;
-                    result += "</td></tr>";
+                    result += "</td><td>" + "<a href=" + arr[7*i] + ">";
+                    result += "Оплатить (" + arr[7 * i + 6] + " р.)</a></td></tr>";
                 }
-                else {
-                    result += "<tr class = \"success\"><td>" + arr[5 * i];
-                    result += "</td><td>" + arr[5 * i + 1];
+                if (arr[7 * i + 5] == "Confirmed") {
+                    result += "<tr class = \"success\"><td>" + arr[7 * i + 1];
+                    result += "</td><td>" + arr[7 * i + 2];
                     result += "</td><td>" + date1;
                     result += "</td><td>" + date2;
+                    result += "</td><td>" + "<a href=" + arr[7 * i] + ">";
+                    result += "Оплатить (" + arr[7 * i + 6] + " р.)</a></td></tr>";
+                }
+                if (arr[7 * i + 5] == "Paid") {
+                    result += "<tr class = \"success\"><td>" + arr[7 * i + 1];
+                    result += "</td><td>" + arr[7 * i + 2];
+                    result += "</td><td>" + date1;
+                    result += "</td><td>" + date2;
+                    result += "</td><td>Оплачено";
                     result += "</td></tr>";
                 }
-
                 $("#waiting-table tbody").append(result);
             }
         }).fail(function (data) {
@@ -235,17 +255,55 @@
         });
     }
 
+    function hideInfo() {
+        $(".login-form").show();
+        $("#login-out").hide();
+        $("#meeting-table").hide();
+        $("#waiting-table").hide();
+        $(".MoneyContainer").hide();
+    }
+
+    function showInfo() {
+        $(".login-form").hide();
+        $("#login-out").show();
+        $("#login-out a").text("Здравствуйте, " + localStorage["username"] + "! Выйти?");
+        getList(localStorage["username"], localStorage["password"]);
+        getActualList(localStorage["username"], localStorage["password"]);
+        $("#meeting-table").show();
+        $("#waiting-table").show();
+        $("#getMoney").show();
+        $("#getMoney").click();
+        getList(localStorage["username"], localStorage["password"]);
+        getActualList(localStorage["username"], localStorage["password"]);
+        $(".MoneyContainer").show();
+        updateMoney();
+    }
+
+    function updateMoney() {
+        if (!localStorage.access_token) {
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: adress + 'api/Money',
+            beforeSend: function (xhr) {
+                var token = localStorage.access_token;
+                xhr.setRequestHeader("Authorization", "Bearer " + token);
+            }
+        }).success(function (data) {
+            $(".MoneyInfo").text("На вашем счете " + data + " рублей");
+        }).fail(function (data) {
+
+        });
+    }
+
     $(function () {
-        if ((localStorage["username"] != null) && (localStorage["password"] != null)) {
-            $(".login-form").hide();
-            $("#login-out a").text("Здравствуйте, " + localStorage["username"] + "! Выйти?");
-            getList(localStorage["username"], localStorage["password"]);
-            getActualList(localStorage["username"], localStorage["password"]);
+        if ((localStorage["username"] != null) && (localStorage["password"] != null) && (localStorage["access_token"])) {
+            showInfo();
         }
         else {
-            $("#login-out").hide();
-            $("#meeting-table").hide();
-            $("#waiting-table").hide();
+            hideInfo();
         }
 
         $('#submit').click(function (e) {
@@ -256,37 +314,63 @@
             };
 
             $.ajax({
-                type: 'GET',
-                url: adress + 'api/LoginApi',
-                data: loginData
+                type: 'POST',
+                url: adress + 'Token',
+                data: "userName=" + loginData.username +
+                "&password=" + loginData.password +
+                "&grant_type=password"
             }).success(function (data) {
-                if (data == false) {
-                    alert("Error!");
-                    return;
-                }
-                else {
+                if (data.access_token != null) {
                     localStorage.setItem("username", loginData["username"]);
                     localStorage.setItem("password", loginData["password"]);
-                    $(".login-form").hide();
-                    $("#login-out").show();
-                    $("#login-out a").text("Здравствуйте, " + localStorage["username"]);
-                    getList(loginData["username"], loginData["password"]);
-                    getActualList(loginData["username"], loginData["password"]);
-                    $("#meeting-table").show();
-                    $("#waiting-table").show();
+                    localStorage.setItem("access_token", data.access_token);
+                    showInfo();
+                }
+                else {
+                    alert("Ошибка входа");
+                    return;
                 }
             }).fail(function (data) {
-                alert('При логине возникла ошибка');
             });
         });
 
         $('#login-out').click(function (e) {
             e.preventDefault();
             localStorage.clear();
-            $(".login-form").show();
-            $("#login-out").hide();
-            $("#meeting-table").hide();
-            $("#waiting-table").hide();
+            hideInfo();
+        });
+
+        $("#getMoney").click(function () {
+            updateMoney();
+        });
+
+        $("#addMoney").click(function () {
+            if (!localStorage.access_token) {
+                return;
+            }
+
+            var sendData = {
+                value: "100"
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: adress + 'api/Money',
+                data: { "": 500 },
+                beforeSend: function (xhr) {
+                    var token = localStorage.access_token;
+                    xhr.setRequestHeader("Authorization", "Bearer " + token);
+                }
+            }).success(function (data) {
+                if (!data) {
+                    alert("Счет не пополнен");
+                }
+                else {
+                    updateMoney();
+                }
+            }).fail(function (data) {
+                alert("Счет не пополнен")
+            });
         });
 
         $('.datetimepicker1').datetimepicker({
@@ -357,7 +441,7 @@
                 type: 'GET',
                 url: adress + 'api/GetMeetingsTimesApi',
                 data: {
-                    id: $("#MeetingRoomId").val(),  
+                    id: $("#MeetingRoomId").val(),
                     username: localStorage["username"],
                     password: localStorage["password"]
                 }
@@ -381,6 +465,29 @@
                 alert('При загрузке времен возникла ошибка');
             });
             $("#myModalBox").fadeIn();
+        });
+
+        $("#waiting-table").on("click", "a", function (e) {          //открыть модальное окно
+            e.preventDefault();
+            var id = $(this).attr("href");
+            $.ajax({
+                type: 'POST',
+                url: adress + 'api/PayMeetingApi',
+                data: {
+                    "": id
+                },
+                beforeSend: function (xhr) {
+                    var token = localStorage.access_token;
+                    xhr.setRequestHeader("Authorization", "Bearer " + token);
+                }
+            }).success(function (data) {
+                if (!data) {
+                    alert("Ошибка оплаты");
+                }
+                getActualList(localStorage.username, localStorage.password);
+            }).fail(function (data) {
+                alert('При подключении возникла ошибка');
+            });
         });
 
         $(".close").click(function () {
